@@ -5,7 +5,14 @@ export async function getMessages(channelName: string): Promise<string>{
 	const guild = client.guilds.cache.get(process.env.GUILD_ID!);
 	const channel = guild?.channels.cache.find((channel) => channel.name === channelName) as TextChannel;
 	if (channel) {
-		const messages = await channel.messages.fetch();
+		let messages: any[] = [];
+		let lastMessageId;
+		while (true) {
+			const fetchedMessages: any = await channel.messages.fetch({limit: 100, before: lastMessageId});
+			if (fetchedMessages.size === 0) break;
+			messages = messages.concat(Array.from(fetchedMessages.values()));
+			lastMessageId = fetchedMessages.last()?.id;
+		}
 		const archive = messages.map(msg => ({
 			author: msg.author.tag, content: msg.content
 		}));
