@@ -1,5 +1,6 @@
 import { ChannelType, Client, GatewayIntentBits, Interaction } from "discord.js";
 import dotenv from "dotenv";
+import { getMessages } from "./commands/getMessages";
 
 dotenv.config();
 
@@ -32,9 +33,10 @@ client.on("interactionCreate", async (interaction: Interaction) => {
 
 	const {commandName} = interaction;
 	setCurrentInteraction(interaction);
-
+	
 	if (commandName === "getmessages") {
-		interaction.reply(GetMessages());
+		const messages = await getMessages(interaction.options.getString("channel")!);
+		interaction.reply(messages);
 	}
 });
 
