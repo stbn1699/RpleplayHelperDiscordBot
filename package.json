@@ -1,0 +1,27 @@
+{
+  "name": "roleplay-helper",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx ts-node src/index.ts",
+    "start:prod": "npx tsc && pm2 del roleplay-helper && pm2 start dist/index.js --name roleplay-helper",
+    "deployCommands": "npx ts-node deployCommands.ts",
+    "update": "git fetch --all && git reset --hard origin/dev && npm i",
+    "updateDeploy": "npm run update && npm run deployCommands && npm run start:prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.4.7",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/node-cron": "^3.0.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
