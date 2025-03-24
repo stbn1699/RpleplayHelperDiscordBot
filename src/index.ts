@@ -33,10 +33,10 @@ client.on("interactionCreate", async (interaction: Interaction) => {
 
 	const {commandName} = interaction;
 	setCurrentInteraction(interaction);
-	
+
 	if (commandName === "getmessages") {
 		const messages = await getMessages(interaction.options.getString("channel")!);
-		interaction.reply(messages);
+		interaction.reply({ files: [messages] });
 	}
 });
 
