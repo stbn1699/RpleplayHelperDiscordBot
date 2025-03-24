@@ -1,6 +1,9 @@
-import { ChannelType, Client, GatewayIntentBits, Interaction } from "discord.js";
+import { AttachmentBuilder, ChannelType, Client, GatewayIntentBits, Interaction } from "discord.js";
 import dotenv from "dotenv";
 import { getMessages } from "./commands/getMessages";
+import { join } from "path";
+import { tmpdir } from "os";
+import { writeFileSync } from "fs";
 
 dotenv.config();
 
@@ -36,7 +39,10 @@ client.on("interactionCreate", async (interaction: Interaction) => {
 
 	if (commandName === "getmessages") {
 		const messages = await getMessages(interaction.options.getString("channel")!);
-		interaction.reply({ files: [messages] });
+		const filePath = join(tmpdir(), "message.txt");
+		writeFileSync(filePath, messages);
+		const attachment = new AttachmentBuilder(filePath);
+		interaction.reply({ files: [attachment] });
 	}
 });
 
